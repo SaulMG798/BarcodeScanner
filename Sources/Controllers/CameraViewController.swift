@@ -18,7 +18,7 @@ public final class CameraViewController: UIViewController {
   weak var delegate: CameraViewControllerDelegate?
 
   /// Focus view type.
-  public var barCodeFocusViewType: FocusViewType = .animated
+  public var barCodeFocusViewType: FocusViewType = .twoDimensions
   public var initialCameraPosition: AVCaptureDevice.Position = .back
   public var showsCameraButton: Bool = false {
     didSet {
@@ -56,7 +56,7 @@ public final class CameraViewController: UIViewController {
   private let permissionService = VideoPermissionService()
 
   /// The current torch mode on the capture device.
-  private var torchMode: TorchMode = .off {
+  public var torchMode: TorchMode = .off {
     didSet {
       guard let captureDevice = captureDevice, captureDevice.hasFlash else { return }
       guard captureDevice.isTorchModeSupported(torchMode.captureTorchMode) else { return }
@@ -180,23 +180,23 @@ public final class CameraViewController: UIViewController {
   }
 
   /// `UIApplicationWillEnterForegroundNotification` action.
-  @objc private func appWillEnterForeground() {
+  @objc public func appWillEnterForeground() {
     torchMode = .off
     animateFocusView()
   }
 
   /// Opens setting to allow camera usage.
-  @objc private func handleSettingsButtonTap() {
+  @objc public func handleSettingsButtonTap() {
     delegate?.cameraViewControllerDidTapSettingsButton(self)
   }
 
   /// Swaps camera position.
-  @objc private func handleCameraButtonTap() {
+  @objc public func handleCameraButtonTap() {
     swapCamera()
   }
 
   /// Sets the next torch mode.
-  @objc private func handleFlashButtonTap() {
+  @objc public func handleFlashButtonTap() {
     torchMode = torchMode.next
   }
 
